@@ -90,7 +90,7 @@ main {
   color: #6200ea;
 }
 
-/* Study Planner Styles */
+
 .planner-form {
   display: flex;
   flex-direction: column;
@@ -169,7 +169,7 @@ main {
   border-radius: 16px 16px 16px 4px;
 }
 
-/* Timer Styles */
+
 .timer-display {
   font-size: 3.5rem;
   font-weight: 700;
@@ -184,7 +184,7 @@ main {
   justify-content: center;
 }
 
-/* Notes Section */
+
 .notes-container {
   display: flex;
   flex-direction: column;
@@ -245,4 +245,123 @@ body.dark-mode {
   main {
     grid-template-columns: 1fr;
   }
+}
+
+.question-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.questions-stats {
+  display: flex;
+  justify-content: space-around;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: var(--background);
+  border-radius: 8px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stat-item span:first-child {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.questions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.question-item {
+  background: var(--background);
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid var(--primary);
+}
+
+.question-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.question-title {
+  font-weight: 600;
+}
+
+.question-date {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.question-difficulty {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.difficulty-easy {
+  background: #e6ffe6;
+  color: #008000;
+}
+
+.difficulty-medium {
+  background: #fff3e6;
+  color: #cc7700;
+}
+
+.difficulty-hard {
+  background: #ffe6e6;
+  color: #cc0000;
+}
+
+.question-notes {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.question-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.question-link:hover {
+  text-decoration: underline;
+}
+
+/* Dark mode adjustments */
+.dark-mode .question-item {
+  background: #2d2d2d;
+}
+
+.dark-mode .questions-stats {
+  background: #2d2d2d;
+}
+
+.dark-mode .question-date {
+  color: #999;
+}
+
+.dark-mode .question-notes {
+  color: #bbb;
 }

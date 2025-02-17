@@ -78,7 +78,7 @@ startBtn.addEventListener('click', function() {
 
 document.getElementById('reset-btn').addEventListener('click', function() {
   clearInterval(timerInterval);
-  document.getElementById('timer').textContent = '25:00';
+  document.getElementById('timer').textContent = '60:00';
   startBtn.innerHTML = '<i class="fas fa-play"></i> Start';
   timerRunning = false;
 });
@@ -96,3 +96,4 @@ document.getElementById('save-note').addEventListener('click', function() {
     noteInput.value = '';
   }
 });
+

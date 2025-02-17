@@ -94,6 +94,56 @@
         <div class="notes-list" id="notes-list"></div>
       </div>
     </div>
+
+    <div class="card" id="daily-questions">
+      <div class="card-header">
+        <i class="fas fa-tasks"></i>
+        <h2>Daily Questions Log</h2>
+      </div>
+      <form class="question-form" id="question-form">
+        <div class="input-group">
+          <i class="fas fa-question-circle"></i>
+          <input type="text" class="form-input" id="question-title" placeholder="Question title" required>
+        </div>
+        <div class="input-group">
+          <i class="fas fa-list-alt"></i>
+          <select class="form-input" id="question-difficulty" required>
+            <option value="">Select difficulty</option>
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <i class="fas fa-link"></i>
+          <input type="url" class="form-input" id="question-link" placeholder="Question link (optional)">
+        </div>
+        <div class="input-group">
+          <i class="fas fa-notes-medical"></i>
+          <textarea class="form-input" id="question-notes" placeholder="Notes or solution approach"></textarea>
+        </div>
+        <button type="submit" class="btn">
+          <i class="fas fa-plus"></i>
+          Add Question
+        </button>
+      </form>
+      <div class="questions-stats">
+        <div class="stat-item">
+          <span id="total-questions">0</span>
+          <span>Total</span>
+        </div>
+        <div class="stat-item">
+          <span id="questions-today">0</span>
+          <span>Today</span>
+        </div>
+        <div class="stat-item">
+          <span id="current-streak">0</span>
+          <span>Streak</span>
+        </div>
+      </div>
+      <div class="questions-list" id="questions-list"></div>
+    </div>
+
   </main>
 
   <script src="script.js"></script>
