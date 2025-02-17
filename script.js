@@ -97,3 +97,35 @@ document.getElementById('save-note').addEventListener('click', function() {
   }
 });
 
+ // Count questions solved today
+ const today = new Date().toDateString();
+ const questionsToday = questions.filter(q => 
+   new Date(q.date).toDateString() === today
+ ).length;
+ questionsTodayEl.textContent = questionsToday;
+ 
+ // Calculate current streak
+ let streak = 0;
+ let currentDate = new Date();
+ let datesChecked = new Set();
+ 
+ for (let i = 0; i < questions.length; i++) {
+   const questionDate = new Date(questions[i].date).toDateString();
+   
+   if (!datesChecked.has(questionDate)) {
+     datesChecked.add(questionDate);
+     
+     if (new Date(questionDate).toDateString() === currentDate.toDateString()) {
+       streak++;
+       currentDate.setDate(currentDate.getDate() - 1);
+     } else {
+       break;
+     }
+   }
+ }
+ 
+ currentStreakEl.textContent = streak;
+
+
+// Display existing questions
+questions.forEach(displayQuestion);
