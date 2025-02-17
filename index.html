@@ -1,0 +1,101 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Personal Study Buddy - NST AI Assistant</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <i class="fas fa-robot"></i>
+        <h1>Your Study Buddy</h1>
+      </div>
+      <button class="theme-toggle" id="theme-toggle">
+        <i class="fas fa-moon"></i>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <div class="card" id="study-planner">
+      <div class="card-header">
+        <i class="fas fa-calendar-alt"></i>
+        <h2>Study Plan</h2>
+      </div>
+      <form class="planner-form" id="planner-form">
+        <div class="input-group">
+          <i class="fas fa-book"></i>
+          <input type="text" class="form-input" id="subject" placeholder="What subject?" required>
+        </div>
+        <div class="input-group">
+          <i class="fas fa-bookmark"></i>
+          <input type="text" class="form-input" id="topic" placeholder="Specific topic" required>
+        </div>
+        <div class="input-group">
+          <i class="fas fa-clock"></i>
+          <input type="date" class="form-input" id="deadline" required>
+        </div>
+        <button type="submit" class="btn">
+          <i class="fas fa-plus"></i>
+          Add to Plan
+        </button>
+      </form>
+      <div id="schedule" class="notes-list"></div>
+    </div>
+
+    <div class="card" id="chatbot">
+      <div class="card-header">
+        <i class="fas fa-comments"></i>
+        <h2>AI Study Assistant</h2>
+      </div>
+      <div class="chatbox" id="chatbox"></div>
+      <div class="input-group">
+        <i class="fas fa-paper-plane"></i>
+        <input type="text" class="form-input" id="user-input" placeholder="Ask me anything...">
+      </div>
+      <button class="btn" id="send-btn">
+        <i class="fas fa-paper-plane"></i>
+        Send
+      </button>
+    </div>
+
+    <div class="card" id="pomodoro">
+      <div class="card-header">
+        <i class="fas fa-hourglass-half"></i>
+        <h2>Focus Timer</h2>
+      </div>
+      <div class="timer-display" id="timer">60:00</div>
+      <div class="timer-controls">
+        <button class="btn" id="start-btn">
+          <i class="fas fa-play"></i>
+          Start
+        </button>
+        <button class="btn" id="reset-btn">
+          <i class="fas fa-redo"></i>
+          Reset
+        </button>
+      </div>
+    </div>
+
+    <div class="card" id="note-taking">
+      <div class="card-header">
+        <i class="fas fa-sticky-note"></i>
+        <h2>Quick Notes</h2>
+      </div>
+      <div class="notes-container">
+        <textarea class="note-input" id="note-input" placeholder="Write your thoughts here..."></textarea>
+        <button class="btn" id="save-note">
+          <i class="fas fa-save"></i>
+          Save Note
+        </button>
+        <div class="notes-list" id="notes-list"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
