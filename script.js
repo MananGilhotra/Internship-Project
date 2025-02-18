@@ -35,7 +35,7 @@ document.getElementById('send-btn').addEventListener('click', function() {
     
     const aiMsg = document.createElement('div');
     aiMsg.className = 'message ai-message';
-    aiMsg.textContent = "I'm here to help!";
+    aiMsg.textContent = "Hello,I'm here to help!";
     chatbox.appendChild(aiMsg);
     
     chatbox.scrollTop = chatbox.scrollHeight;
