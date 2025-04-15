@@ -96,25 +96,21 @@ document.getElementById('save-note').addEventListener('click', function() {
     noteInput.value = '';
   }
 });
-// Daily Questions Tracker
 const questionForm = document.getElementById('question-form');
 const questionsList = document.getElementById('questions-list');
 const totalQuestionsEl = document.getElementById('total-questions');
 const questionsTodayEl = document.getElementById('questions-today');
 const currentStreakEl = document.getElementById('current-streak');
 
-// Load questions from localStorage
 let questions = JSON.parse(localStorage.getItem('daily-questions')) || [];
 updateQuestionStats();
 
 questionForm.addEventListener('submit', function(e) {
   e.preventDefault();
-  
-  // Get current date at midnight (to compare dates properly)
+
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   
-  // Check if user already added a question today
   const addedToday = questions.some(q => {
     const qDate = new Date(q.date);
     qDate.setHours(0, 0, 0, 0);
@@ -138,7 +134,7 @@ questionForm.addEventListener('submit', function(e) {
     link,
     notes,
     date: new Date().toISOString(),
-    isCustom: true // Flag to identify user-added questions
+    isCustom: true
   };
   
   questions.unshift(newQuestion);
@@ -148,7 +144,6 @@ questionForm.addEventListener('submit', function(e) {
   updateQuestionStats();
   this.reset();
   
-  // Show success message
   alert('Question added successfully! Come back tomorrow to maintain your streak!');
 });
 
@@ -189,14 +184,11 @@ function displayQuestion(question) {
 }
 
 function updateQuestionStats() {
-  // Update total questions
   totalQuestionsEl.textContent = questions.length;
   
-  // Get today's date at midnight for comparison
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   
-  // Count questions solved today
   const questionsToday = questions.filter(q => {
     const qDate = new Date(q.date);
     qDate.setHours(0, 0, 0, 0);
@@ -204,13 +196,11 @@ function updateQuestionStats() {
   }).length;
   questionsTodayEl.textContent = questionsToday;
   
-  // Calculate current streak
   let streak = 0;
   let currentDate = new Date();
   currentDate.setHours(0, 0, 0, 0);
   let datesChecked = new Set();
   
-  // Sort questions by date for accurate streak calculation
   const sortedQuestions = [...questions].sort((a, b) => 
     new Date(b.date) - new Date(a.date)
   );
@@ -229,7 +219,6 @@ function updateQuestionStats() {
       } else if (
         (currentDate.getTime() - questionDate.getTime()) / (1000 * 60 * 60 * 24) > 1
       ) {
-        // Break if there's a gap of more than 1 day
         break;
       }
     }
@@ -237,7 +226,6 @@ function updateQuestionStats() {
   
   currentStreakEl.textContent = streak;
   
-  // Check if user needs to add today's question
   const hasAddedToday = questions.some(q => {
     const qDate = new Date(q.date);
     qDate.setHours(0, 0, 0, 0);
@@ -252,7 +240,6 @@ function updateQuestionStats() {
   }
 }
 
-// Add this CSS to style the notification and custom badge
 const style = document.createElement('style');
 style.textContent = `
   .notification {
@@ -280,5 +267,4 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Display existing questions
 questions.forEach(displayQuestion);

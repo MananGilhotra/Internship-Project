@@ -218,7 +218,6 @@ main {
   border-left: 4px solid #6200ea;
 }
 
-/* Dark Mode */
 body.dark-mode {
   background: #121212;
   color: #ffffff;
@@ -233,7 +232,7 @@ body.dark-mode {
 .dark-mode .note-input {
   background: #2d2d2d;
   border-color: #333;
-  color: white;
+  color: black;
 }
 
 .dark-mode .note-item {
@@ -348,7 +347,6 @@ body.dark-mode {
   text-decoration: underline;
 }
 
-/* Dark mode adjustments */
 .dark-mode .question-item {
   background: #2d2d2d;
 }
