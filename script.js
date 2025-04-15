@@ -1,55 +1,75 @@
-document.getElementById('theme-toggle').addEventListener('click', function() {
+const themeToggleButton = document.getElementById('theme-toggle');
+themeToggleButton.addEventListener('click', function() {
   document.body.classList.toggle('dark-mode');
-  this.querySelector('i').classList.toggle('fa-sun');
-  this.querySelector('i').classList.toggle('fa-moon');
+  
+  const themeIcon = this.querySelector('i');
+  themeIcon.classList.toggle('fa-sun');
+  themeIcon.classList.toggle('fa-moon');
 });
 
+const studyPlanForm = document.getElementById('planner-form');
+const studyPlanList = document.getElementById('study-plan-list');
 
-document.getElementById('planner-form').addEventListener('submit', function(e) {
-  e.preventDefault();
+studyPlanForm.addEventListener('submit', function(event) {
+  event.preventDefault();
+  
   const subject = document.getElementById('subject').value;
   const topic = document.getElementById('topic').value;
   const deadline = document.getElementById('deadline').value;
   
-  const noteItem = document.createElement('div');
-  noteItem.className = 'note-item';
-  noteItem.innerHTML = `<strong>${subject}</strong>: ${topic} (Due: ${deadline})`;
-  document.getElementById('schedule').appendChild(noteItem);
+  const formattedDate = new Date(deadline).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
+  
+  const planItem = document.createElement('div');
+  planItem.className = 'note-item';
+  planItem.innerHTML = `<strong>${subject}</strong>: ${topic} (Due: ${formattedDate})`;
+  
+  studyPlanList.appendChild(planItem);
   
   this.reset();
 });
 
+const sendButton = document.getElementById('send-btn');
+const chatbox = document.getElementById('chatbox');
+const userInput = document.getElementById('user-input');
 
-
-document.getElementById('send-btn').addEventListener('click', function() {
-  const input = document.getElementById('user-input');
-  const message = input.value.trim();
+sendButton.addEventListener('click', function() {
+  const message = userInput.value.trim();
   
   if (message) {
-    const chatbox = document.getElementById('chatbox');
+    const userMessage = document.createElement('div');
+    userMessage.className = 'message user-message';
+    userMessage.textContent = message;
+    chatbox.appendChild(userMessage);
     
-    const userMsg = document.createElement('div');
-    userMsg.className = 'message user-message';
-    userMsg.textContent = message;
-    chatbox.appendChild(userMsg);
-    
-    const aiMsg = document.createElement('div');
-    aiMsg.className = 'message ai-message';
-    aiMsg.textContent = "Hello,I'm here to help!";
-    chatbox.appendChild(aiMsg);
+    const aiMessage = document.createElement('div');
+    aiMessage.className = 'message ai-message';
+    aiMessage.textContent = "I'm here to help with your studies! What would you like to learn today?";
+    chatbox.appendChild(aiMessage);
     
     chatbox.scrollTop = chatbox.scrollHeight;
-    input.value = '';
+    
+    userInput.value = '';
   }
 });
 
-
+userInput.addEventListener('keypress', function(event) {
+  if (event.key === 'Enter') {
+    sendButton.click();
+    event.preventDefault();
+  }
+});
 
 let timerRunning = false;
 let timerInterval;
-const startBtn = document.getElementById('start-btn');
+const startButton = document.getElementById('start-btn');
+const resetButton = document.getElementById('reset-btn');
+const timerDisplay = document.getElementById('timer');
 
-startBtn.addEventListener('click', function() {
+startButton.addEventListener('click', function() {
   if (timerRunning) {
     clearInterval(timerInterval);
     this.innerHTML = '<i class="fas fa-play"></i> Start';
@@ -61,14 +81,16 @@ startBtn.addEventListener('click', function() {
     
     timerInterval = setInterval(() => {
       timeLeft--;
+      
       const minutes = Math.floor(timeLeft / 60);
       const seconds = timeLeft % 60;
-      document.getElementById('timer').textContent = 
+      
+      timerDisplay.textContent = 
         `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
       
       if (timeLeft <= 0) {
         clearInterval(timerInterval);
-        alert('Great job! Take a break!');
+        alert('Great job! You completed a full focus session. Take a break!');
         this.innerHTML = '<i class="fas fa-play"></i> Start';
         timerRunning = false;
       }
@@ -76,195 +98,38 @@ startBtn.addEventListener('click', function() {
   }
 });
 
-document.getElementById('reset-btn').addEventListener('click', function() {
+resetButton.addEventListener('click', function() {
   clearInterval(timerInterval);
-  document.getElementById('timer').textContent = '60:00';
-  startBtn.innerHTML = '<i class="fas fa-play"></i> Start';
+  timerDisplay.textContent = '60:00';
+  startButton.innerHTML = '<i class="fas fa-play"></i> Start';
   timerRunning = false;
 });
 
+const saveNoteButton = document.getElementById('save-note');
+const noteInput = document.getElementById('note-input');
+const notesList = document.getElementById('notes-list');
 
-document.getElementById('save-note').addEventListener('click', function() {
-  const noteInput = document.getElementById('note-input');
+saveNoteButton.addEventListener('click', function() {
   const noteText = noteInput.value.trim();
   
   if (noteText) {
+    const now = new Date();
+    const timestamp = now.toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    
     const noteItem = document.createElement('div');
     noteItem.className = 'note-item';
-    noteItem.textContent = noteText;
-    document.getElementById('notes-list').appendChild(noteItem);
+    noteItem.innerHTML = `
+      <div><small>${timestamp}</small></div>
+      <div>${noteText}</div>
+    `;
+    
+    notesList.appendChild(noteItem);
+    
     noteInput.value = '';
   }
 });
-const questionForm = document.getElementById('question-form');
-const questionsList = document.getElementById('questions-list');
-const totalQuestionsEl = document.getElementById('total-questions');
-const questionsTodayEl = document.getElementById('questions-today');
-const currentStreakEl = document.getElementById('current-streak');
-
-let questions = JSON.parse(localStorage.getItem('daily-questions')) || [];
-updateQuestionStats();
-
-questionForm.addEventListener('submit', function(e) {
-  e.preventDefault();
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  
-  const addedToday = questions.some(q => {
-    const qDate = new Date(q.date);
-    qDate.setHours(0, 0, 0, 0);
-    return qDate.getTime() === today.getTime();
-  });
-  
-  if (addedToday) {
-    alert('You have already added today\'s question. Come back tomorrow!');
-    return;
-  }
-  
-  const title = document.getElementById('question-title').value;
-  const difficulty = document.getElementById('question-difficulty').value;
-  const link = document.getElementById('question-link').value;
-  const notes = document.getElementById('question-notes').value;
-  
-  const newQuestion = {
-    id: Date.now(),
-    title,
-    difficulty,
-    link,
-    notes,
-    date: new Date().toISOString(),
-    isCustom: true
-  };
-  
-  questions.unshift(newQuestion);
-  localStorage.setItem('daily-questions', JSON.stringify(questions));
-  
-  displayQuestion(newQuestion);
-  updateQuestionStats();
-  this.reset();
-  
-  alert('Question added successfully! Come back tomorrow to maintain your streak!');
-});
-
-function displayQuestion(question) {
-  const questionEl = document.createElement('div');
-  questionEl.className = 'question-item';
-  
-  const date = new Date(question.date);
-  const formattedDate = date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric'
-  });
-  
-  questionEl.innerHTML = `
-    <div class="question-item-header">
-      <span class="question-title">${question.title}</span>
-      <span class="question-date">${formattedDate}</span>
-    </div>
-    <span class="question-difficulty difficulty-${question.difficulty.toLowerCase()}">
-      ${question.difficulty}
-    </span>
-    ${question.notes ? `<p class="question-notes">${question.notes}</p>` : ''}
-    ${question.link ? `
-      <a href="${question.link}" target="_blank" class="question-link">
-        <i class="fas fa-external-link-alt"></i>
-        View Question
-      </a>
-    ` : ''}
-    ${question.isCustom ? '<span class="custom-badge">Custom Question</span>' : ''}
-  `;
-  
-  if (questionsList.firstChild) {
-    questionsList.insertBefore(questionEl, questionsList.firstChild);
-  } else {
-    questionsList.appendChild(questionEl);
-  }
-}
-
-function updateQuestionStats() {
-  totalQuestionsEl.textContent = questions.length;
-  
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  
-  const questionsToday = questions.filter(q => {
-    const qDate = new Date(q.date);
-    qDate.setHours(0, 0, 0, 0);
-    return qDate.getTime() === today.getTime();
-  }).length;
-  questionsTodayEl.textContent = questionsToday;
-  
-  let streak = 0;
-  let currentDate = new Date();
-  currentDate.setHours(0, 0, 0, 0);
-  let datesChecked = new Set();
-  
-  const sortedQuestions = [...questions].sort((a, b) => 
-    new Date(b.date) - new Date(a.date)
-  );
-  
-  for (let i = 0; i < sortedQuestions.length; i++) {
-    const questionDate = new Date(sortedQuestions[i].date);
-    questionDate.setHours(0, 0, 0, 0);
-    const dateStr = questionDate.toISOString();
-    
-    if (!datesChecked.has(dateStr)) {
-      datesChecked.add(dateStr);
-      
-      if (questionDate.getTime() === currentDate.getTime()) {
-        streak++;
-        currentDate.setDate(currentDate.getDate() - 1);
-      } else if (
-        (currentDate.getTime() - questionDate.getTime()) / (1000 * 60 * 60 * 24) > 1
-      ) {
-        break;
-      }
-    }
-  }
-  
-  currentStreakEl.textContent = streak;
-  
-  const hasAddedToday = questions.some(q => {
-    const qDate = new Date(q.date);
-    qDate.setHours(0, 0, 0, 0);
-    return qDate.getTime() === today.getTime();
-  });
-  
-  if (!hasAddedToday) {
-    const notification = document.createElement('div');
-    notification.className = 'notification';
-    notification.textContent = 'Add today\'s question to maintain your streak!';
-    questionForm.insertBefore(notification, questionForm.firstChild);
-  }
-}
-
-const style = document.createElement('style');
-style.textContent = `
-  .notification {
-    background-color: #fff3cd;
-    color: #856404;
-    padding: 0.75rem;
-    margin-bottom: 1rem;
-    border-radius: 4px;
-    text-align: center;
-  }
-  
-  .custom-badge {
-    background-color: var(--primary);
-    color: white;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    margin-left: 0.5rem;
-  }
-  
-  .dark-mode .notification {
-    background-color: #2c2c2c;
-    color: #ffd700;
-  }
-`;
-document.head.appendChild(style);
-
-questions.forEach(displayQuestion);
